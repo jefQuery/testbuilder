@@ -199,8 +199,90 @@ describe('Maestro', function() {
       })
     })(len)
   }
-  
+
 });
 
-describe('should support China UnionPay')
-describe('should support Switch')
+describe('Switch', function() {
+  var switchCCN = 
+    [['4903','4903567890123456','490356789012345678','4903567890123456789'], 
+    ['4905','4905567890123456','490556789012345678','4905567890123456789'], 
+    ['4911','4911567890123456','491156789012345678','4911567890123456789'],
+    ['4936','4936567890123456','493656789012345678','4936567890123456789'], 
+    ['6759','6759567890123456','675956789012345678','6759567890123456789'], 
+    ['6333','6333567890123456','633356789012345678','6333567890123456789'], 
+    ['564182','5641827890123456','564182789012345678','5641827890123456789'], 
+    ['633110','6331107890123456','633110789012345678','6331107890123456789']];
+
+  for(var idx = 0; idx < switchCCN.length; idx++){
+    (function(idx){
+      var prefix = switchCCN[idx][0];
+
+      it('has a prefix of '+ prefix +' and a length of 16', function(){
+        detectNetwork(switchCCN[idx][1]).should.equal('Switch');
+      });
+      it('has a prefix of '+ prefix +' and a length of 18', function(){
+        detectNetwork(switchCCN[idx][2]).should.equal('Switch');
+      });
+      it('has a prefix of '+ prefix +' and a length of 19', function(){
+        detectNetwork(switchCCN[idx][3]).should.equal('Switch');
+      })
+
+    })(idx)
+  }
+
+});
+
+describe('China UnionPay', function(){
+  var CUPCCN622 = [], CUPCCN628 = [], CUPCCN62 =[];
+  
+  for (var i = 624; i <= 626; i++){
+    var sixteen = i + '4567890123456'
+    var seventeen = i + '45678901234567'
+    var eightteen = i + '456789012345678'
+    var nineteen = i + '4567890123456789'
+
+    CUPCCN62.push([sixteen, seventeen, eightteen, nineteen]);
+  }
+  for (var i = 6282; i <= 6288; i++){
+    var sixteen = i + '567890123456'
+    var seventeen = i + '5678901234567'
+    var eightteen = i + '56789012345678'
+    var nineteen = i + '567890123456789'
+
+    CUPCCN628.push([sixteen, seventeen, eightteen, nineteen]);
+  }
+  for (var i = 622126; i <= 622925; i++){
+    var sixteen = i + '7890123456'
+    var seventeen = i + '78901234567'
+    var eightteen = i + '789012345678'
+    var nineteen = i + '7890123456789'
+
+    CUPCCN622.push([sixteen, seventeen, eightteen, nineteen]);
+  }
+
+  var chinaUnionPayLoop =  function (loopStart, loopEnd, CCNArray){
+    for (var prefix = loopStart; prefix <= loopEnd; prefix++){
+      (function(prefix){
+        var base = loopStart;
+        it('has a prefix of '+ prefix +' and a length of 16', function(){
+          detectNetwork(CCNArray[prefix-base][0]).should.equal('China UnionPay')
+        });
+        it('has a prefix of '+ prefix +' and a length of 17', function(){
+          detectNetwork(CCNArray[prefix-base][1]).should.equal('China UnionPay')
+        });
+        it('has a prefix of '+ prefix +' and a length of 18', function(){
+          detectNetwork(CCNArray[prefix-base][2]).should.equal('China UnionPay')
+        });
+        it('has a prefix of '+ prefix +' and a length of 19', function(){
+          detectNetwork(CCNArray[prefix-base][3]).should.equal('China UnionPay')
+        });
+      })(prefix)
+    }  
+  }
+
+  chinaUnionPayLoop(624, 626, CUPCCN62);
+  chinaUnionPayLoop(6282, 6288, CUPCCN628);
+  chinaUnionPayLoop(622126, 622925, CUPCCN622);
+
+});
+
