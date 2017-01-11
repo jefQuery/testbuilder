@@ -11,8 +11,17 @@ var detectNetwork = function(cardNumber) {
   // Note: `cardNumber` will always be a string
   // The Diner's Club network always starts with a 38 or 39 and is 14 digits long
   // The American Express network always starts with a 34 or 37 and is 15 digits long
-  var startingDigits = cardNumber[0] + cardNumber[1];
+  var startingDigits = cardNumber[0];
   var len = cardNumber.length;
+
+  if (startingDigits === '4' && 
+  	          (len === 13 || 
+  	           len === 16 || 
+  	           len === 19)){
+  	return "Visa";
+  } else {
+  	startingDigits += cardNumber[1];
+  }
 
   if ((startingDigits === '38' || 
   	   startingDigits === '39') && 
@@ -22,11 +31,6 @@ var detectNetwork = function(cardNumber) {
   	   		  startingDigits === '37') && 
   	          len === 15){
   	return "American Express";
-  }else if (cardNumber[0] === '4' && 
-  	          (len === 13 || 
-  	           len === 16 || 
-  	           len === 19)){
-  	return "Visa";
   } else if ((startingDigits === '51' || 
   	   		  startingDigits === '52' || 
   	   		  startingDigits === '53' || 
@@ -34,8 +38,39 @@ var detectNetwork = function(cardNumber) {
   	   		  startingDigits === '55') && 
   	          len === 16){
   	return "MasterCard";
+  } else if (startingDigits === '65' && 
+  	         (len === 16 ||
+  	          len === 19)){
+  	return "Discover";
+  } else {
+  	startingDigits += cardNumber[2];
   }
-  
+
+  var startingNum = Number(startingDigits);
+
+  if ((startingNum < 650 && startingNum > 643) && 
+  	  (len === 16 ||
+  	   len === 19)){
+  	return "Discover";
+  } else {
+  	startingDigits += cardNumber[3];
+  }
+
+  if ((startingDigits === '5018' || 
+  	   startingDigits === '5020' || 
+  	   startingDigits === '5038' || 
+  	   startingDigits === '6304') && 
+  	  (len >= 12 && len <=19)){
+  	return "Maestro";
+  } else if (startingDigits === '6011' && 
+  	         (len === 16 ||
+  	          len === 19)){
+  	return "Discover";
+  }
+
+
+// Discover always has a prefix of 6011, 644-649, or 65, and a length of 16 or 19.
+// Maestro always has a prefix of 5018, 5020, 5038, or 6304, and a length of 12-19.
   // Once you've read this, go ahead and try to implement this function, then return to the console.
 };
 
