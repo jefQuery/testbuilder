@@ -16,6 +16,8 @@ var detectNetwork = function(cardNumber) {
 
 
 
+  startingDigits = cardNumber.slice(0,4);
+  
   if ((startingDigits === '5018' || 
   	   startingDigits === '5020' || 
   	   startingDigits === '5038' || 
