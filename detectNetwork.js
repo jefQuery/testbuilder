@@ -13,12 +13,38 @@ var detectNetwork = function(cardNumber) {
   // The American Express network always starts with a 34 or 37 and is 15 digits long
   var startingDigits = cardNumber.slice(0,6);
   var len = cardNumber.length;
+  var startingNum = Number(startingDigits);
 
+// China UnionPay always has a prefix of 622126-622925, 624-626, or 6282-6288 and a length of 16-19.
+// Switch always has a prefix of 4903, 4905, 4911, 4936, 564182, 633110, 6333, or 6759 and a length of 16, 18, or 19.
+  if ((startingNum >= 622126 && startingNum <= 622925) && 
+  	  (len >= 16 && len <=19)){
+  	return "China UnionPay";
+  } else if ((startingDigits === '564182' ||
+  			  startingDigits === '633110') && 
+  	         (len === 16 ||
+  	          len === 18 ||
+  	          len === 19)){
+  	return "Switch";
+  } else {
+  	startingDigits = cardNumber.slice(0, 4);
+  	startingNum = Number(startingDigits);
+  }
 
-
-  startingDigits = cardNumber.slice(0,4);
-  
-  if ((startingDigits === '5018' || 
+  if ((startingNum >= 6282 && startingNum <= 6288) && 
+  	  (len >= 16 && len <=19)){
+  	return "China UnionPay";
+  } else if ((startingDigits === '4903' ||
+  			  startingDigits === '4905' ||
+  			  startingDigits === '4911' ||
+  			  startingDigits === '4936' ||
+  			  startingDigits === '6333' ||
+  			  startingDigits === '6795' ) && 
+  	         (len === 16 ||
+  	          len === 18 ||
+  	          len === 19)){
+  	return "Switch";
+  } else if ((startingDigits === '5018' || 
   	   startingDigits === '5020' || 
   	   startingDigits === '5038' || 
   	   startingDigits === '6304') && 
@@ -30,10 +56,13 @@ var detectNetwork = function(cardNumber) {
   	return "Discover";
   } else {
   	startingDigits = cardNumber.slice(0, 3);
+  	startingNum = Number(startingDigits);
   }
 
-  var startingNum = Number(startingDigits);
-  if ((startingNum < 650 && startingNum > 643) && 
+  if ((startingNum >= 624 && startingNum <= 626) && 
+  	  (len >= 16 && len <=19)){
+  	return "China UnionPay";
+  } else if ((startingNum < 650 && startingNum > 643) && 
   	  (len === 16 ||
   	   len === 19)){
   	return "Discover";
