@@ -39,7 +39,7 @@ var detectNetwork = function(cardNumber) {
   			  startingDigits === '4911' ||
   			  startingDigits === '4936' ||
   			  startingDigits === '6333' ||
-  			  startingDigits === '6795' ) && 
+  			  startingDigits === '6759' ) && 
   	         (len === 16 ||
   	          len === 18 ||
   	          len === 19)){
