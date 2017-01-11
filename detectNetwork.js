@@ -22,7 +22,20 @@ var detectNetwork = function(cardNumber) {
   	   		  startingDigits === '37') && 
   	          len === 15){
   	return "American Express";
+  }else if (cardNumber[0] === '4' && 
+  	          (len === 13 || 
+  	           len === 16 || 
+  	           len === 19)){
+  	return "Visa";
+  } else if ((startingDigits === '51' || 
+  	   		  startingDigits === '52' || 
+  	   		  startingDigits === '53' || 
+  	   		  startingDigits === '54' || 
+  	   		  startingDigits === '55') && 
+  	          len === 16){
+  	return "MasterCard";
   }
+  
   // Once you've read this, go ahead and try to implement this function, then return to the console.
 };
 
